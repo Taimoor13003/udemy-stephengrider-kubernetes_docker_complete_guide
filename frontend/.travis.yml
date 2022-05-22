@@ -1,0 +1,29 @@
+sudo: required
+services:
+ - docker
+
+before_install:
+ - docker build -t taimoor/react -f Dockerfile.dev .
+
+script:
+ - docker run taimoor/react npm run test -- --coverage
+
+
+#  EB-TITLE EXAMPLE
+#  Docker-env.us-west-2.elasticbeanstalk.com
+deploy:
+ provider: elasticbeanstalk
+ #  put aws elastic bean region
+ reigon: "us-west-2"
+ #  put aws elastic bean application
+ app: "docker"
+ #  put aws elastic bean stalk env
+ env: "Docker-env"
+ bucket_name: "blablabla"
+#  bucket path should = app
+ bucket_path: "docker"
+ on:
+  branch: master
+ access_key_id: $AWS_ACCESS_KEY
+ secret_access_key:
+  secure: "$AWS_SECRET_KEY"
